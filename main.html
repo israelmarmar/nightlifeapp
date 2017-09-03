@@ -4,23 +4,29 @@
 
 <head>
   <meta charset="UTF-8">
-   <title>Voting app</title>
+   <title>Nightlife app</title>
    <link rel="stylesheet" type="text/css" href="styles.css">
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
 
+  <style>
+  body {
+  background-color: #1f1f7a;
+
+}
+  </style>
+  
 </head>
 
 <body translate="no" >
 
-<script src="https://fb.me/react-0.14.3.js"></script>
-<script src="https://fb.me/react-dom-0.14.3.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.1/react.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.1/react-dom.min.js"></script>
 <script src='https://unpkg.com/axios/dist/axios.min.js'></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 
 <script type="text/babel">
-	
-  var Result = React.createClass({
+	var Result = React.createClass({
   
   getInitialState: function () {
     return { 
@@ -33,12 +39,12 @@
    
   var th = this;
     this.serverRequest = 
-      axios.get("/apijson")
+      axios.get("/apijson?loc="+this.props.loc)
      
         .then(function(result) {    
       
           th.setState({
-            data: result.data,
+            data: result.data.businesses,
  
           });
       
@@ -49,39 +55,52 @@
   
   render: function () {
      
-   
-     
+	 
+		 
  console.log(this.state.data);
-    
-  
+		
+	
           return (
           <div>
-  {this.state.data.map(function(item) {
+	{this.state.data.map(function(item) {
 
-          return (<a href={'/polls/'+item._id}><div className='poll'>{item.title}</div></a>)
-      
-      })}
-  </div>
-    
-    )
+          return (<div className='result'>{item.name}</div>)
+		  
+		  })}
+	</div>
+		
+		)
 
 }
   
 });
 
-ReactDOM.render(<Result/>, document.getElementById('polllist'));
-	</script>
+$(function() {
 
   
-<div class="page">
+	$( "#searchfield" ).on( "keydown", function(event) {
+      if(event.which == 13){
+	  ReactDOM.render(<Result loc={document.getElementById('searchfield').value}/>, document.getElementById('results'));
+	  }
+	  
+	  });
+
+	
+    $("#go").on("click", function() {
+	ReactDOM.render(<Result loc={document.getElementById('searchfield').value}/>, document.getElementById('results'));
+	});
+
+});
+
+</script>
+
 
 <div class="form-container">
-    <input type="text" class="search material" placeholder="Enter places of your choice"/>
-  <button type="submit" class="go-button material">GO</button>
-  </div>
-
+    <input id="searchfield" type="text" class="search material" placeholder="Enter places of your choice"/>
+	<button id="go" class="go-button material">GO</button>
   </div>
   
+  <div id="results"></div>
 
 
 </body>

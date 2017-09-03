@@ -13,9 +13,9 @@ var app = express();
 var port = process.env.PORT || 3000;
 var router = express.Router();
 var session=require('express-session');
+var request = require("request");
 var mongodb= require("mongodb");
 var MongoClient = mongodb.MongoClient;
-var axios = require('axios');
 var YELP_ID="nM3rD0hDEaAPvGZt9CsHgQ";
 var YELP_CLIENT="d5xql3xJuP3UisVzcNDuAkw3BLha3xHGBmMaP81XM54RT59I3izc52pcA302DmXe";
 var urldb =process.env.MONGOLAB_URI || 'mongodb://urlshort:78292725@ds127993.mlab.com:27993/israelmarmar';     
@@ -37,19 +37,54 @@ var loc=req.query.loc;
 var token;
 var config;
 
-    axios.post('https://api.yelp.com/oauth2/token', { client_id: YELP_ID, client_secret: YELP_CLIENT })
-  .then(function(result){
-    token=result.access_token;
-  });  
+/*
+    axios.post('https://api.yelp.com/oauth2/token', { form:{client_id:YELP_ID, client_secret:YELP_CLIENT},
+   headers: { 'Content-Type': 'application/x-www-form-urlencoded'}
+})
+  .then(response => {
+    console.log(response.data.url);
+    console.log(response.data.explanation);
+  })
+  .catch(error => {
+    console.log(error.response.data);
+  }); 
 
   var config = {headers: {'Authorization': 'Bearer '+token}};
 
   axios.get('https://api.yelp.com/v3/businesses/search?id='+YELP_ID+'&oauth_consumer_key='+YELP_CLIENT+'&location='+loc, config)
   .then(function(result){
-    res.json(result);
+    res.json(result.data);
   });  
 
+  */
+  
+  var options = { method: 'POST',
+  url: 'https://api.yelp.com/oauth2/token',
+  headers: 
+   {'cache-control': 'no-cache',
+     'content-type': 'application/x-www-form-urlencoded' },
+  form: {client_id:YELP_ID, client_secret:YELP_CLIENT } };
 
+	request(options, function (error, response, body) {
+		if (error) throw new Error(error);
+
+		token=JSON.parse(body).access_token;
+		
+		 options = { method: 'GET',
+  url: 'https://api.yelp.com/v3/businesses/search?id='+YELP_ID+'&oauth_consumer_key='+YELP_CLIENT+'&location='+loc,
+  headers: {'Authorization': 'Bearer '+token} };
+
+	request(options, function (error, response, body) {
+		if (error) throw new Error(error);
+console.log(token);
+		res.setHeader('Content-Type', 'application/json'); 
+		res.send(body);
+		});
+		
+
+		});
+		
+	
 });
 
 router.get("/request-token", function(req, res) {
