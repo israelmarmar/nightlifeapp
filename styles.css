@@ -1,5 +1,7 @@
 body {
   background-color: #1f1f7a;
+   overflow-x: hidden;
+  overflow-y: scroll;
 
 }
 
@@ -92,8 +94,4 @@ position: relative;
   position:relative;
   
 }
-::-webkit-scrollbar { 
-    display: none; 
-}
-
 
