@@ -65,7 +65,7 @@
 	{this.state.data.map(function(item) {
 
           return (<div className='result'>
-          <img src={item.image_url} className="image"/>
+          <a href={item.url}><img src={item.image_url} className="image"/></a>
 
           <div>
           <b>{item.name+"\n"}</b>
