@@ -13,6 +13,7 @@ var app = express();
 var port = process.env.PORT || 3000;
 var router = express.Router();
 var session=require('express-session');
+var cookieParser = require('cookie-parser');
 var request = require("request");
 var mongodb= require("mongodb");
 var MongoClient = mongodb.MongoClient;
