@@ -1,8 +1,8 @@
 var Twitter = require("node-twitter-api");
 
     var twitter = new Twitter({
-        consumerKey: "tLmXhGJFnNeCt0Kc8FSkIgdkJ",
-    	consumerSecret:"D8aCOoe7lsEXH4Zu5TzgZphmwmyIp3bxnKTftM281xjeEfYZrI",
+        consumerKey: "uoqmgicgFUARcjKeds78ocVlj",
+    	consumerSecret:"rGDB6sf7qk9hoiDxszEPPGvWlg5V78vEvzethOy6QNPt3DS1AU",
     	callback: "https://votingapp-isrmm.herokuapp.com/access-token"
     });
   
@@ -130,7 +130,7 @@ router.get("/request-token", function(req, res) {
                         res.status(500).send(err);
                     else{
                         req.session.user = JSON.stringify(user);
-                        res.redirect("https://votingapp-isrmm.herokuapp.com/");
+                        res.redirect("https://nightlifeapp-isrmm.herokuapp.com/");
                     }
                 });
         });

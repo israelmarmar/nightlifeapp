@@ -52,10 +52,14 @@
      
      
   },
+
+  going: function() {
+  window.location.href="/request-token";
+  },
   
   render: function () {
      
-	 
+	 var th=this;
 		 
  console.log(this.state.data);
 		
@@ -72,7 +76,7 @@
           <div>{"Price: "+item.price}</div>
           <div>{"Rating: "+item.rating}</div>
           </div>
-          <button className="material go-button going-button">GOING</button>
+          <button className="material go-button going-button" onClick={th.going}>GOING</button>
           </div>)
 		  
 		  })}
