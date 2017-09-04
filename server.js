@@ -3,7 +3,7 @@ var Twitter = require("node-twitter-api");
     var twitter = new Twitter({
         consumerKey: "uoqmgicgFUARcjKeds78ocVlj",
     	consumerSecret:"rGDB6sf7qk9hoiDxszEPPGvWlg5V78vEvzethOy6QNPt3DS1AU",
-    	callback: "https://votingapp-isrmm.herokuapp.com/access-token"
+    	callback: "https://nightlifeapp-isrmm.herokuapp.com/access-token"
     });
   
 
