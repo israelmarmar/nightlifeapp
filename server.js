@@ -134,7 +134,7 @@ router.get("/request-token", function(req, res) {
                     if (err)
                         res.status(500).send(err);
                     else{
-                        req.session.user = JSON.stringify(user);
+                        req.session.user = JSON.stringify(user); 
                         res.redirect("https://nightlifeapp-isrmm.herokuapp.com/");
                     }
                 });
