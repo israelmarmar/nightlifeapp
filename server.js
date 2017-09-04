@@ -42,23 +42,39 @@ var config;
    headers: { 'Content-Type': 'application/x-www-form-urlencoded'}
 })
   .then(response => {
+=======
+ config = { headers: { 'Content-Type': 'form-data' } };
+
+    axios.post('https://api.yelp.com/oauth2/token', { client_id: YELP_ID, client_secret: YELP_CLIENT }, config)
+   .then(response => {
+>>>>>>> Stashed changes
     console.log(response.data.url);
     console.log(response.data.explanation);
   })
   .catch(error => {
+<<<<<<< Updated upstream
     console.log(error.response.data);
   }); 
+=======
+    console.log(error);
+  });
+>>>>>>> Stashed changes
 
-  var config = {headers: {'Authorization': 'Bearer '+token}};
+  config = {headers: {'Authorization': 'Bearer '+token}};
 
+
+
+/*
   axios.get('https://api.yelp.com/v3/businesses/search?id='+YELP_ID+'&oauth_consumer_key='+YELP_CLIENT+'&location='+loc, config)
   .then(function(result){
     res.json(result.data);
   });  
+<<<<<<< Updated upstream
 
   */
   
   var options = { method: 'POST',
+  "rejectUnauthorized": false, 
   url: 'https://api.yelp.com/oauth2/token',
   headers: 
    {'cache-control': 'no-cache',
@@ -71,12 +87,13 @@ var config;
 		token=JSON.parse(body).access_token;
 		
 		 options = { method: 'GET',
-  url: 'https://api.yelp.com/v3/businesses/search?id='+YELP_ID+'&oauth_consumer_key='+YELP_CLIENT+'&location='+loc,
+		 "rejectUnauthorized": false, 
+  url: 'https://api.yelp.com/v3/businesses/search?term=restaurant&id='+YELP_ID+'&oauth_consumer_key='+YELP_CLIENT+'&location='+encodeURI(loc),
   headers: {'Authorization': 'Bearer '+token} };
 
 	request(options, function (error, response, body) {
 		if (error) throw new Error(error);
-console.log(token);
+console.log(loc);
 		res.setHeader('Content-Type', 'application/json'); 
 		res.send(body);
 		});
@@ -85,6 +102,7 @@ console.log(token);
 		});
 		
 	
+
 });
 
 router.get("/request-token", function(req, res) {

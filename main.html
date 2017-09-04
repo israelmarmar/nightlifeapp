@@ -39,7 +39,7 @@
    
   var th = this;
     this.serverRequest = 
-      axios.get("/apijson?loc="+this.props.loc)
+      axios.get("/apijson?loc="+encodeURI(this.props.loc))
      
         .then(function(result) {    
       
@@ -64,7 +64,16 @@
           <div>
 	{this.state.data.map(function(item) {
 
-          return (<div className='result'>{item.name}</div>)
+          return (<div className='result'>
+          <img src={item.image_url} className="image"/>
+
+          <div>
+          <b>{item.name+"\n"}</b>
+          <div>{"Price: "+item.price}</div>
+          <div>{"Rating: "+item.rating}</div>
+          </div>
+          <button className="material go-button going-button">GOING</button>
+          </div>)
 		  
 		  })}
 	</div>
@@ -80,14 +89,16 @@ $(function() {
   
 	$( "#searchfield" ).on( "keydown", function(event) {
       if(event.which == 13){
-	  ReactDOM.render(<Result loc={document.getElementById('searchfield').value}/>, document.getElementById('results'));
+      ReactDOM.unmountComponentAtNode(document.getElementById('results'));
+	  ReactDOM.render(<Result loc={$("#searchfield").val()}/>, document.getElementById('results'));
 	  }
 	  
 	  });
 
 	
     $("#go").on("click", function() {
-	ReactDOM.render(<Result loc={document.getElementById('searchfield').value}/>, document.getElementById('results'));
+    ReactDOM.unmountComponentAtNode(document.getElementById('results'));
+	ReactDOM.render(<Result loc={$("#searchfield").val()}/>, document.getElementById('results'));
 	});
 
 });

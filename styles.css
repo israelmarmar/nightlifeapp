@@ -2,7 +2,6 @@ body {
   background-color: #1f1f7a;
    overflow-x: hidden;
   overflow-y: scroll;
-
 }
 
 .search{
@@ -33,7 +32,7 @@ border: 3px solid #ffff00;
 
 
 .go-button{
-	width:60px;
+	padding-left:10px;
 	height:50px;
 	color:white;
 	margin-bottom:0px;
@@ -67,13 +66,24 @@ border: 3px solid #ffff00;
 }
 
 .result{
-position: relative;
-    display: block;
-    padding: 10px 15px;
-    margin-bottom: -1px;
-    background-color: #fff;
-    border: 1px solid #737373;
-	    text-align: center;
+    overflow: hidden;
+    padding: 10px;
+    margin-top: 20px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-direction: row;
+    
+    align-items: flex-start;
+    width: auto;
+    height: auto;
+    font-size: 18px;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    box-shadow: 8px 8px 8px 0 rgba(0,0,0,.2), 6px 6px 20px 0 rgba(0,0,0,.19);
+    font-family: Raleway,sans-serif;
+	font-size:26px;
+    color:rgb(255, 255, 255);
 }
 
 #results{
@@ -95,3 +105,15 @@ position: relative;
   
 }
 
+.image {
+	margin-right:30px;
+    height: 150px;
+    width: 150px;
+    border: 3px solid #fff;
+    border-radius: 10px;
+}
+
+.going-button{
+position:absolute;
+left:80%;
+}
