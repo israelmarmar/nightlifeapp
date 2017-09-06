@@ -44,7 +44,7 @@ var Buttong = React.createClass({
   },
   
   going: function(evt) {
-  th=this;
+  var th=this;
   axios.get("/going?id="+evt.target.id)
      
         .then(function(result) {    
