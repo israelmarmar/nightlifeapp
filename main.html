@@ -43,7 +43,7 @@ var Buttong = React.createClass({
           });
   },
   
-  going: function() {
+  going: function(evt) {
   
   axios.get("/going?id="+evt.target.id)
      
