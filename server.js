@@ -90,7 +90,7 @@ var config;
   
   function countvl(obj,id){
 	  return obj.filter(function(v) {
-  return v.id=id;
+  return v.idloc===id;
 }).length;
   }
   
@@ -114,7 +114,7 @@ var config;
 
 	request(options, function (error, response, body) {
 		if (error) throw new Error(error);
-console.log(loc);
+
 		var json=JSON.parse(body).businesses;
 		
 		var array=[];
@@ -126,7 +126,6 @@ console.log(loc);
 			if (err) throw err;
 			
 			for(var i=0;i<json.length;i++){
-				
 			json[i].going=countvl(result,json[i].id);	
 			}
 			
@@ -146,23 +145,28 @@ console.log(loc);
 app.get("/going", function(req, res) {
       var id=req.query.id;
 		if(req.session.user){
-			
-			db.collection("nightlife").find( { user: JSON.parse(req.session.user).screen_name}).toArray(function(err, result) {
+			var resp=res;
+			console.log(req.session.user);
+			var query={user: req.session.user.user,idloc:id};
+			db.collection("nightlife").find(query).toArray(function(err, result) {
 			if (err) throw err;
 			
-				if(!(result)){
-				db.collection("nightlife").insertOne({user:JSON.parse(req.session.user).screen_name,idloc:id}, function(err, res) {
+				if(result.length==0){
+					
+				db.collection("nightlife").insertOne({user:req.session.user.user,idloc:id}, function(err, res) {
 				if (err) throw err;
-					db.collection("nightlife").count().then({idloc:id},function(value){
-						res.json({msg:value});
+					console.log("add");
+					db.collection("nightlife").count({idloc:id}).then(function(value){
+						console.log("count");
+						resp.json({msg:value});
 					});
 				
 				});
 				}else{
-				db.collection("nightlife").deleteOne({user:JSON.parse(req.session.user).screen_name,idloc:id}, function(err, obj) {
+				db.collection("nightlife").deleteOne({user:req.session.user.user,idloc:id}, function(err, obj) {
 				if (err) throw err;
-					db.collection("nightlife").count().then({idloc:id},function(value){
-					res.json({msg:value});
+					db.collection("nightlife").count({idloc:id}).then(function(value){
+					resp.json({msg:value});
 					});
 				});
 				}
@@ -198,7 +202,7 @@ app.get("/request-token", function(req, res) {
                     if (err)
                         res.status(500).send(err);
                     else{
-                        req.session.user = JSON.stringify(user); 
+                        req.session.user = user; 
                         res.redirect("https://nightlifeapp-isrmm.herokuapp.com/");
                     }
                 });

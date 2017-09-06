@@ -54,8 +54,19 @@
   },
 
   going: function(evt) {
+  
+  axios.get("/going?id="+evt.target.id)
+     
+        .then(function(result) {    
+			
+		  if(result.data.msg=="User is not signed")
+          window.location.href="/request-token";
+		  else
+		  evt.target.value=result.data.msg;
+			
+          });
+      
 
-  window.location.href="/request-token";
   },
   
   render: function () {
