@@ -4,6 +4,7 @@ body {
   overflow-y: scroll;
 }
 
+
 .search{
 
 	padding-top: 10px;
@@ -56,14 +57,14 @@ color:#ffff00;
 }
 
 .form-container{
-	margin-top: 100px;
+	margin-top: 90px;
 	position: absolute; 
 	left: 450px; 
-	right: 0; 
+	right: 0px; 
 	margin-left: auto; 
 	margin-right: auto; 
 	width: 900px; 
-		margin-bottom:300px;
+		margin-bottom:0px;
 }
 
 .result{
@@ -89,18 +90,19 @@ color:#ffff00;
 
 #results{
 	position:relative;
-	top:150px;
+	left:0px;
+	right:0px;
+	
+	top:250px;
 	text-align: left;
   background-color: transparent;
     padding-top: 100px;
-    padding-right: 110px;
+    padding-right: 180px;
     padding-bottom: 100px;
-    padding-left: 170px;
+    padding-left: 180px;
   
-  margin-top: 90px;
-    margin-right: 100px;
-    margin-bottom: 20px;
-    margin-left: 120px;
+  margin-top: 70px;
+   
   font-family: Monospace;
   position:relative;
   
@@ -119,5 +121,13 @@ color:#ffff00;
 }
 .going-button{
 position:absolute;
-left:80%;
+left:75%;
+
+}
+
+h1,h2{
+	position:relative;
+	right:200px;
+	text-align:center;
+    font-family: Raleway,sans-serif;	
 }
