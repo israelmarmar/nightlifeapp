@@ -22,7 +22,7 @@ var Buttong = React.createClass({
         .then(function(result) {    
 			
 		  if(result.data.msg=="User is not signed")
-          window.location.href="/request-token";
+          window.location.href="/request-token?search="+this.props.term;
 		  else
 		  th.setState({
             going: result.data.msg,
@@ -87,7 +87,7 @@ var Result = React.createClass({
           <div>{"Price: "+item.price}</div>
           <div>{"Rating: "+item.rating}</div>
           </div>
-          <Buttong id={item.id} className="material go-button going-button" going={item.going}/>
+          <Buttong id={item.id} term={item.term} className="material go-button going-button" going={item.going}/>
           </div>)
 		  
 		  })}
@@ -129,5 +129,25 @@ var Searchform = React.createClass({
 
 });
 
+		function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+        }
+          return "";
+      }
+
+if(getCookie("search")!=="undefined"){
+	document.getElementById('searchfield').value=getCookie("search");
+	ReactDOM.render(<Result loc={document.getElementById('searchfield').value}/>, document.getElementById('results'));
+}
 
 ReactDOM.render(<Searchform />, document.getElementById('container'));

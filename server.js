@@ -44,6 +44,7 @@ app.get('/logout', function (req, res) {
 });
 
 app.get('/', function (req, res) {
+	res.cookie("search",req.session.search);
     res.sendFile("/main.html",{root: __dirname});
 });
 
@@ -52,41 +53,6 @@ var loc=req.query.loc;
 var token;
 var config;
 
-/*
-    axios.post('https://api.yelp.com/oauth2/token', { form:{client_id:YELP_ID, client_secret:YELP_CLIENT},
-   headers: { 'Content-Type': 'application/x-www-form-urlencoded'}
-})
-  .then(response => {
-=======
- config = { headers: { 'Content-Type': 'form-data' } };
-
-    axios.post('https://api.yelp.com/oauth2/token', { client_id: YELP_ID, client_secret: YELP_CLIENT }, config)
-   .then(response => {
->>>>>>> Stashed changes
-    console.log(response.data.url);
-    console.log(response.data.explanation);
-  })
-  .catch(error => {
-<<<<<<< Updated upstream
-    console.log(error.response.data);
-  }); 
-=======
-    console.log(error);
-  });
->>>>>>> Stashed changes
-
-  config = {headers: {'Authorization': 'Bearer '+token}};
-
-
-
-/*
-  axios.get('https://api.yelp.com/v3/businesses/search?id='+YELP_ID+'&oauth_consumer_key='+YELP_CLIENT+'&location='+loc, config)
-  .then(function(result){
-    res.json(result.data);
-  });  
-<<<<<<< Updated upstream
-
-  */
   
   function countvl(obj,id){
 	  return obj.filter(function(v) {
@@ -126,7 +92,8 @@ var config;
 			if (err) throw err;
 			
 			for(var i=0;i<json.length;i++){
-			json[i].going=countvl(result,json[i].id);	
+			json[i].going=countvl(result,json[i].id);
+			json[i].term=loc;
 			}
 			
 		res.json(json);
@@ -179,11 +146,13 @@ app.get("/going", function(req, res) {
 });
 
 app.get("/request-token", function(req, res) {
+	var search=req.query.search;
         twitter.getRequestToken(function(err, requestToken, requestSecret) {
             if (err)
                 res.status(500).send(err);
             else {
-                _requestSecret = requestSecret;         
+                _requestSecret = requestSecret;      
+				req.session.search=search;
                 res.redirect("https://api.twitter.com/oauth/authenticate?oauth_token=" + requestToken);
             }
         });
