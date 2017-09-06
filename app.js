@@ -145,9 +145,9 @@ var Searchform = React.createClass({
           return "";
       }
 
+ReactDOM.render(<Searchform />, document.getElementById('container'));
+
 if(getCookie("search")!=="undefined"){
 	document.getElementById('searchfield').value=getCookie("search");
 	ReactDOM.render(<Result loc={document.getElementById('searchfield').value}/>, document.getElementById('results'));
 }
-
-ReactDOM.render(<Searchform />, document.getElementById('container'));
