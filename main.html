@@ -26,7 +26,50 @@
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 
 <script type="text/babel">
-	var Result = React.createClass({
+
+var Buttong = React.createClass({
+	getInitialState: function () {
+    return { 
+            going:0
+
+           };
+  },
+  
+  componentDidMount: function() {
+	  
+  this.setState({
+            going: this.props.going,
+ 
+          });
+  },
+  
+  going: function() {
+  
+  axios.get("/going?id="+evt.target.id)
+     
+        .then(function(result) {    
+			
+		  if(result.data.msg=="User is not signed")
+          window.location.href="/request-token";
+		  else
+		  th.setState({
+            going: result.data.msg,
+ 
+          });
+			
+          });
+      
+
+  },
+  
+  render: function () {
+  return (<div><button id={this.props.id} onClick={this.going} className="material go-button going-button">{this.state.going+" GOING"}</button></div>)
+  }
+  
+});
+
+
+var Result = React.createClass({
   
   getInitialState: function () {
     return { 
@@ -53,22 +96,6 @@
      
   },
 
-  going: function(evt) {
-  
-  axios.get("/going?id="+evt.target.id)
-     
-        .then(function(result) {    
-			
-		  if(result.data.msg=="User is not signed")
-          window.location.href="/request-token";
-		  else
-		  evt.target.innerText=result.data.msg+" GOING";
-			
-          });
-      
-
-  },
-  
   render: function () {
      
 	 var th=this;
@@ -88,7 +115,7 @@
           <div>{"Price: "+item.price}</div>
           <div>{"Rating: "+item.rating}</div>
           </div>
-          <button id={item.id} className="material go-button going-button" onClick={th.going}>{item.going+" GOING"}</button>
+          <Buttong id={item.id} className="material go-button going-button" going={item.going}/>
           </div>)
 		  
 		  })}
