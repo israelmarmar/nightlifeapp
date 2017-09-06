@@ -22,7 +22,7 @@ var Buttong = React.createClass({
         .then(function(result) {    
 			
 		  if(result.data.msg=="User is not signed")
-          window.location.href="/request-token?search="+this.props.term;
+          window.location.href="/request-token?search="+th.props.term;
 		  else
 		  th.setState({
             going: result.data.msg,
