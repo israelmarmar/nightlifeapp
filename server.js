@@ -46,6 +46,7 @@ app.get('/logout', function (req, res) {
 app.get('/', function (req, res) {
 	res.cookie("search",req.session.search);
     res.sendFile("/main.html",{root: __dirname});
+	delete req.session.search;
 });
 
 app.get('/apijson', function (req, res) {
