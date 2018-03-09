@@ -91,6 +91,7 @@ var config;
 		if (error) throw new Error(error);
 
 		token=JSON.parse(body).access_token;
+    console.log(token)
 		
 		 options = { method: 'GET',
 		 "rejectUnauthorized": false, 

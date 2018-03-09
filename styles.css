@@ -5,7 +5,9 @@ body {
 }
 
 .search{
-
+    position: relative;
+    left: 25%;
+    right: 25%;
 	padding-top: 10px;
 	padding-right: 20px;
 	padding-bottom: 10px;
@@ -33,6 +35,9 @@ color:#ffff00;
 
 
 .go-button{
+    position: relative;
+    left: 25%;
+    right: 25%;
 	padding-left:10px;
 	height:50px;
 	color:white;
@@ -57,13 +62,13 @@ color:#ffff00;
 
 .form-container{
 	margin-top: 100px;
-	position: absolute; 
-	left: 450px; 
-	right: 0; 
+	
 	margin-left: auto; 
 	margin-right: auto; 
 	width: 900px; 
-		margin-bottom:300px;
+	margin-bottom:300px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .result{
