@@ -10,7 +10,7 @@ class Result extends Component{
     this.state = {data:[]} 
   }
   
-   componentDidMount() {
+   componentWillMount() {
    
   var th = this;
     this.serverRequest = 
