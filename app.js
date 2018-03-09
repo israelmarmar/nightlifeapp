@@ -11,13 +11,13 @@ class Result extends Component{
   }
   
    componentWillMount() {
-   console.log("mount")
+
   var th = this;
     this.serverRequest = 
       axios.get("/apijson?loc="+encodeURI(this.props.loc))
      
         .then(function(result) {    
-      
+          console.log(result)
           th.setState({
             data: result.data.businesses,
  
