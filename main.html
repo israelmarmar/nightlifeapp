@@ -19,106 +19,6 @@
 
 <body translate="no" >
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.1/react.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.1/react-dom.min.js"></script>
-<script src='https://unpkg.com/axios/dist/axios.min.js'></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
-<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-
-<script type="text/babel">
-	var Result = React.createClass({
-  
-  getInitialState: function () {
-    return { 
-            data:[]
-
-           };
-  },
-  
-   componentDidMount: function() {
-   
-  var th = this;
-    this.serverRequest = 
-      axios.get("/apijson?loc="+encodeURI(this.props.loc))
-     
-        .then(function(result) {    
-      
-          th.setState({
-            data: result.data.businesses,
- 
-          });
-      
-        })
-     
-     
-  },
-
-  going: function(evt) {
-
-  window.location.href="/request-token";
-  },
-  
-  render: function () {
-     
-	 var th=this;
-		 
- console.log(this.state.data);
-		
-	
-          return (
-          <div>
-	{this.state.data.map(function(item) {
-
-          return (<div className='result'>
-          <a href={item.url}><img src={item.image_url} className="image"/></a>
-
-          <div>
-          <b>{item.name+"\n"}</b>
-          <div>{"Price: "+item.price}</div>
-          <div>{"Rating: "+item.rating}</div>
-          </div>
-          <button className="material go-button going-button" onClick={th.going}>GOING</button>
-          </div>)
-		  
-		  })}
-	</div>
-		
-		)
-
-}
-  
-});
-
-function setCookie(cname, cvalue, exdays) {
-    var d = new Date();
-    d.setTime(d.getTime() + (exdays*24*60*60*1000));
-    var expires = "expires="+ d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-}
-
-$(function() {
-
-  
-	$( "#searchfield" ).on( "keydown", function(event) {
-      if(event.which == 13){
-      ReactDOM.unmountComponentAtNode(document.getElementById('results'));
-      setCookie("city", $("#searchfield").val(), 1);
-	  ReactDOM.render(<Result loc={$("#searchfield").val()}/>, document.getElementById('results'));
-	  }
-	  
-	  });
-
-	
-    $("#go").on("click", function() {
-    ReactDOM.unmountComponentAtNode(document.getElementById('results'));
-    setCookie("city", $("#searchfield").val(), 1);
-	ReactDOM.render(<Result loc={$("#searchfield").val()}/>, document.getElementById('results'));
-	});
-
-});
-
-</script>
-
 
 <div class="form-container">
     <input id="searchfield" type="text" class="search material" placeholder="Enter places of your choice"/>
@@ -127,6 +27,7 @@ $(function() {
   
   <div id="results"></div>
 
+<script src="/dist/app.js"></script>
 
 </body>
 </html>
