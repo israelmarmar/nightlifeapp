@@ -34,16 +34,15 @@ class Result extends Component{
   }
   
   render() {
-     
-	 var th=this;
+
 		 
  console.log(this.state.data);
 		
-	
+	         if (this.state.data.length>0){
           return (
           <div>
-	{th.state.data.map(function(item) {
 
+	{th.state.data.map(function(item) {
           return (<div className='result'>
           <a href={item.url}><img src={item.image_url} className="image"/></a>
 
@@ -58,7 +57,7 @@ class Result extends Component{
 		  })}
 	</div>
 		
-		)
+		)}else return(<img src="/load-gif-12.gif" height="80" width="80" />)
 
 }
   
