@@ -11,7 +11,7 @@ class Result extends Component{
   }
   
    componentWillMount() {
-   
+   console.log("mount")
   var th = this;
     this.serverRequest = 
       axios.get("/apijson?loc="+encodeURI(this.props.loc))
