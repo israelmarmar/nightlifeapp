@@ -42,7 +42,7 @@ class Result extends Component{
 	
           return (
           <div>
-	{this.state.data.map(function(item) {
+	{th.state.data.map(function(item) {
 
           return (<div className='result'>
           <a href={item.url}><img src={item.image_url} className="image"/></a>
