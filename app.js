@@ -1,62 +1,23 @@
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import axios from 'axios'
+import $ from "jquery";
 
-var Buttong = React.createClass({
-	getInitialState: function () {
-    return { 
-            going:0
-
-           };
-  },
+class Result extends Component{
   
-  componentDidMount: function() {
-	  
-  this.setState({
-            going: this.props.going,
- 
-          });
-  },
-  
-  going: function(evt) {
-  var th=this;
-  axios.get("/going?id="+evt.target.id)
-     
-        .then(function(result) {    
-			
-		  if(result.data.msg=="User is not signed")
-          window.location.href="/request-token?search="+th.props.term;
-		  else
-		  th.setState({
-            going: result.data.msg,
- 
-          });
-			
-          });
-      
-
-  },
-  
-  render: function () {
-  return (<div><button id={this.props.id} onClick={this.going} className="material go-button going-button">{this.state.going+" GOING"}</button></div>)
+   constructor(props) {
+    super(props);
+    this.state = {data:[]} 
   }
   
-});
+   componentWillMount() {
 
-var Result = React.createClass({
-  
-  getInitialState: function () {
-    return { 
-            data:[]
-
-           };
-  },
-  
-   componentDidMount: function() {
-   
   var th = this;
     this.serverRequest = 
       axios.get("/apijson?loc="+encodeURI(this.props.loc))
      
         .then(function(result) {    
-      
+          console.log(result.data)
           th.setState({
             data: result.data,
  
@@ -65,21 +26,25 @@ var Result = React.createClass({
         })
      
      
-  },
+  }
 
-  render: function () {
-     
-	 var th=this;
-		 
- console.log(this.state.data);
-		
-	
+  going(evt) {
+
+  window.location.href="/request-token";
+  }
+  
+  render() {
+
+    var th=this
+    console.log(this.state.data.length)
+	         if (this.state.data.length==0)
+           return(<img id="loading" src="/load-gif-12.gif" height="80" width="80" />)
+         else{
           return (
           <div>
-		  
-	{this.state.data.map(function(item) {
 
-          return (<div className='result'>
+	{this.state.data.map(function(item) {
+          return (<div className='result container'>
           <a href={item.url}><img src={item.image_url} className="image"/></a>
 
           <div>
@@ -87,67 +52,42 @@ var Result = React.createClass({
           <div>{"Price: "+item.price}</div>
           <div>{"Rating: "+item.rating}</div>
           </div>
-          <Buttong id={item.id} term={item.term} className="material go-button going-button" going={item.going}/>
+          <button className="material go-button going-button" onClick={th.going}>GOING</button>
           </div>)
 		  
 		  })}
 	</div>
 		
-		)
+		)}
 
 }
+  
+}
 
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+$(function() {
 
   
-});
+	$( "#searchfield" ).on( "keydown", function(event) {
+      if(event.which == 13){
+      ReactDOM.unmountComponentAtNode(document.getElementById('results'));
+      setCookie("city", $("#searchfield").val(), 1);
+	  ReactDOM.render(<Result loc={$("#searchfield").val()}/>, document.getElementById('results'));
+	  }
+	  
+	  });
 
-var Searchform = React.createClass({
-
-		search: function(){
-		ReactDOM.unmountComponentAtNode(document.getElementById('results'));
-		ReactDOM.render(<Result loc={document.getElementById('searchfield').value}/>, document.getElementById('results'));
-		},
-		
-		searchenter:  function(e) {
-				if (e.key == 'Enter') {
-				ReactDOM.unmountComponentAtNode(document.getElementById('results'));
-		ReactDOM.render(<Result loc={document.getElementById('searchfield').value}/>, document.getElementById('results'));
-				}
-		},
-		
-	 render: function () {
-		return( <div>
-		<div className="form-container">
-		<h1>Plans tonight?</h1>
-		<h2>See which bars are hoppin' tonight and RSVP ahead of time!</h2>
-    <input id="searchfield" type="text" onKeyPress={this.searchenter} className="search material" placeholder="Enter places of your choice"/>
-	<button id="go" onClick={this.search} className="go-button material">GO</button>
-  </div>
-  <div id="results"></div>
-   </div>)
-	 }
+	
+    $("#go").on("click", function() {
+    ReactDOM.unmountComponentAtNode(document.getElementById('results'));
+    setCookie("city", $("#searchfield").val(), 1);
+	ReactDOM.render(<Result loc={$("#searchfield").val()}/>, document.getElementById('results'));
+	});
 
 });
-
-		function getCookie(cname) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for(var i = 0; i <ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-        }
-          return "";
-      }
-
-ReactDOM.render(<Searchform />, document.getElementById('container'));
-
-if(getCookie("search")!=="undefined"){
-	document.getElementById('searchfield').value=getCookie("search");
-	ReactDOM.render(<Result loc={document.getElementById('searchfield').value}/>, document.getElementById('results'));
-}

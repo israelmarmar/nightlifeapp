@@ -53,7 +53,6 @@ app.get('/apijson', function (req, res) {
 var loc=req.query.loc;
 var token;
 var config;
-
   
   function countvl(obj,id){
 	  return obj.filter(function(v) {
@@ -61,27 +60,14 @@ var config;
 }).length;
   }
   
-  var options = { method: 'POST',
-  "rejectUnauthorized": false, 
-  url: 'https://api.yelp.com/oauth2/token',
-  headers: 
-   {'cache-control': 'no-cache',
-     'content-type': 'application/x-www-form-urlencoded' },
-  form: {client_id:YELP_ID, client_secret:YELP_CLIENT } };
-
-	request(options, function (error, response, body) {
-		if (error) throw new Error(error);
-
-		token=JSON.parse(body).access_token;
-		
-		 options = { method: 'GET',
+  var options = { method: 'GET',
 		 "rejectUnauthorized": false, 
   url: 'https://api.yelp.com/v3/businesses/search?term=restaurant&id='+YELP_ID+'&oauth_consumer_key='+YELP_CLIENT+'&location='+encodeURI(loc),
-  headers: {'Authorization': 'Bearer '+token} };
+  headers: {'Authorization': 'Bearer '+process.env.API_KEY} };
 
 	request(options, function (error, response, body) {
 		if (error) throw new Error(error);
-
+		//console.log(body)
 		var json=JSON.parse(body).businesses;
 		
 		var array=[];
@@ -104,12 +90,8 @@ var config;
 		});
 		
 
-		});
+})
 		
-	
-
-});
-
 app.get("/going", function(req, res) {
       var id=req.query.id;
 		if(req.session.user){
