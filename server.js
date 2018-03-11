@@ -1,11 +1,11 @@
 var Twitter = require("node-twitter-api");
 
-    var twitter = new Twitter({
-        consumerKey: "uoqmgicgFUARcjKeds78ocVlj",
-    	consumerSecret:"rGDB6sf7qk9hoiDxszEPPGvWlg5V78vEvzethOy6QNPt3DS1AU",
-    	callback: "https://nightlifeapp-isrmm.herokuapp.com/access-token"
-    });
-  
+var twitter = new Twitter({
+	consumerKey: "uoqmgicgFUARcjKeds78ocVlj",
+	consumerSecret:"rGDB6sf7qk9hoiDxszEPPGvWlg5V78vEvzethOy6QNPt3DS1AU",
+	callback: "https://nightlifeapp-isrmm.herokuapp.com/access-token"
+});
+
 
 var _requestSecret;
 var express = require('express');
@@ -26,14 +26,14 @@ var db;
 app.use(cookieParser());
 app.use(session({secret: 'some secret key',resave: "", // add this; choose the value you want from the docs
   saveUninitialized: "" // add this; choose the value you want from the docs
-				}));
+}));
 
 app.use(express.static(__dirname + '/'));
 
 MongoClient.connect(urldb, function(err, database) {
-  if(err) throw err;
+	if(err) throw err;
 
-  db = database;
+	db = database;
 
 
 });
@@ -45,25 +45,25 @@ app.get('/logout', function (req, res) {
 
 app.get('/', function (req, res) {
 	res.cookie("search",req.session.search);
-    res.sendFile("/main.html",{root: __dirname});
+	res.sendFile("/main.html",{root: __dirname});
 	delete req.session.search;
 });
 
 app.get('/apijson', function (req, res) {
-var loc=req.query.loc;
-var token;
-var config;
-  
-  function countvl(obj,id){
-	  return obj.filter(function(v) {
-  return v.idloc===id;
-}).length;
-  }
-  
-  var options = { method: 'GET',
-		 "rejectUnauthorized": false, 
-  url: 'https://api.yelp.com/v3/businesses/search?term=restaurant&id='+YELP_ID+'&oauth_consumer_key='+YELP_CLIENT+'&location='+encodeURI(loc),
-  headers: {'Authorization': 'Bearer '+process.env.API_KEY} };
+	var loc=req.query.loc;
+	var token;
+	var config;
+	
+	function countvl(obj,id){
+		return obj.filter(function(v) {
+			return v.idloc===id;
+		}).length;
+	}
+	
+	var options = { method: 'GET',
+	"rejectUnauthorized": false, 
+	url: 'https://api.yelp.com/v3/businesses/search?term=restaurant&id='+YELP_ID+'&oauth_consumer_key='+YELP_CLIENT+'&location='+encodeURI(loc),
+	headers: {'Authorization': 'Bearer '+process.env.API_KEY} };
 
 	request(options, function (error, response, body) {
 		if (error) throw new Error(error);
@@ -72,100 +72,100 @@ var config;
 		
 		var array=[];
 		for(var i=0;i<json.length;i++){
-		array.push(json[i].id);	
+			array.push(json[i].id);	
 		}
 		
 		db.collection("nightlife").find( { idloc: { $in: array } }).toArray(function(err, result) {
 			if (err) throw err;
 			
 			for(var i=0;i<json.length;i++){
-			json[i].going=countvl(result,json[i].id);
-			json[i].term=loc;
+				json[i].going=countvl(result,json[i].id);
+				json[i].term=loc;
 			}
 			
-		res.json(json);
+			res.json(json);
+			
+		});
+		
+	});
 	
-		});
-		
-		});
-		
 
 })
-		
+
 app.get("/going", function(req, res) {
-      var id=req.query.id;
-		if(req.session.user){
-			var resp=res;
-			console.log(req.session.user);
-			var query={user: req.session.user.user,idloc:id};
-			db.collection("nightlife").find(query).toArray(function(err, result) {
+	var id=req.query.id;
+	if(req.session.user){
+		var resp=res;
+		console.log(req.session.user);
+		var query={user: req.session.user.user,idloc:id};
+		db.collection("nightlife").find(query).toArray(function(err, result) {
 			if (err) throw err;
 			
-				if(result.length==0){
-					
+			if(result.length==0){
+				
 				db.collection("nightlife").insertOne({user:req.session.user.user,idloc:id}, function(err, res) {
-				if (err) throw err;
+					if (err) throw err;
 					console.log("add");
 					db.collection("nightlife").count({idloc:id}).then(function(value){
 						console.log("count");
 						resp.json({msg:value});
 					});
-				
+					
 				});
-				}else{
+			}else{
 				db.collection("nightlife").deleteOne({user:req.session.user.user,idloc:id}, function(err, obj) {
-				if (err) throw err;
+					if (err) throw err;
 					db.collection("nightlife").count({idloc:id}).then(function(value){
-					resp.json({msg:value});
+						resp.json({msg:value});
 					});
 				});
-				}
+			}
 			
-			});
-			
-		}else{
-			res.json({msg:"User is not signed"});
-		}
+		});
+		
+	}else{
+		res.json({msg:"User is not signed"});
+	}
 });
 
 app.get("/request-token", function(req, res) {
 	var search=req.query.search;
-        twitter.getRequestToken(function(err, requestToken, requestSecret) {
-            if (err)
-                res.status(500).send(err);
-            else {
-                _requestSecret = requestSecret;      
-				req.session.search=search;
-                res.redirect("https://api.twitter.com/oauth/authenticate?oauth_token=" + requestToken);
-            }
-        });
-    });
-	
-  
- app.get("/access-token", function(req, res) {
-        var requestToken = req.query.oauth_token,
-      verifier = req.query.oauth_verifier;
+	twitter.getRequestToken(function(err, requestToken, requestSecret) {
+		if (err)
+			res.status(500).send(err);
+		else {
+			_requestSecret = requestSecret;      
+			req.session.search=search;
+			res.redirect("https://api.twitter.com/oauth/authenticate?oauth_token=" + requestToken);
+		}
+	});
+});
 
-        twitter.getAccessToken(requestToken, _requestSecret, verifier, function(err, accessToken, accessSecret) {
-            if (err)
-                res.status(500).send(err);
-            else
-                twitter.verifyCredentials(accessToken, accessSecret, function(err, user) {
-                    if (err)
-                        res.status(500).send(err);
-                    else{
-                        req.session.user = user; 
-                        res.redirect("https://nightlifeapp-isrmm.herokuapp.com/");
-                    }
-                });
-        });
-    });
 
-	
-	app.get("/going", function(req, res) {
+app.get("/access-token", function(req, res) {
+	var requestToken = req.query.oauth_token,
+	verifier = req.query.oauth_verifier;
 
-	 });
+	twitter.getAccessToken(requestToken, _requestSecret, verifier, function(err, accessToken, accessSecret) {
+		if (err)
+			res.status(500).send(err);
+		else
+			twitter.verifyCredentials(accessToken, accessSecret, function(err, user) {
+				if (err)
+					res.status(500).send(err);
+				else{
+					req.session.user = user; 
+					res.redirect("https://nightlifeapp-isrmm.herokuapp.com/");
+				}
+			});
+	});
+});
+
+
+app.get("/going", function(req, res) {
+
+});
 
 app.listen(port, function () {
- console.log("ligado");
+	console.log("ligado");
 });
