@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 
+export default class Buttong extends Component{
+
   constructor(props) {
-    super(props)
-     this.state={going:0};
+     super(props)
+     this.state={going:0}
   }
   
   componentDidMount() {
@@ -37,4 +39,4 @@ import axios from 'axios'
   return (<div><button id={this.props.id} onClick={this.going} className="material go-button going-button">{this.state.going+" GOING"}</button></div>)
   }
   
-});
+}
