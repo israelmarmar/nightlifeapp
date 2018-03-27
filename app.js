@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios'
 import $ from "jquery";
+import Buttong from "./Buttong"
 
 class Result extends Component{
 	
@@ -52,7 +53,7 @@ class Result extends Component{
 						<div>{"Price: "+item.price}</div>
 						<div>{"Rating: "+item.rating}</div>
 						</div>
-						<button className="material go-button going-button" onClick={th.going}>GOING</button>
+						<Buttong id={item.id} term={item.term} className="material go-button going-button" going={item.going}/>
 						</div>)
 						
 					})}
