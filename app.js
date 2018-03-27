@@ -92,3 +92,8 @@ class Result extends Component{
 				});
 
 			});
+
+			if(getCookie("search")!=="undefined"){
+				document.getElementById('searchfield').value=getCookie("search");
+				ReactDOM.render(<Result loc={document.getElementById('searchfield').value}/>, document.getElementById('results'));
+			}
