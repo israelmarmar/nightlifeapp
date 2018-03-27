@@ -1,12 +1,9 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 
-export default class Buttong extends Component{
-	getInitialState: function () {
-    return { 
-            going:0
-
-           };
+  constructor(props) {
+    super(props)
+     this.state={going:0};
   }
   
   componentDidMount() {
