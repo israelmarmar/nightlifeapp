@@ -36,7 +36,7 @@ export default class Buttong extends Component{
   }
   
   render() {
-  return (<div><button id={this.props.id} onClick={this.going} className="material go-button going-button">{this.state.going+" GOING"}</button></div>)
+  return (<div><button id={this.props.id} onClick={(event) =>this.going(event)} className="material go-button going-button">{this.state.going+" GOING"}</button></div>)
   }
   
 }
